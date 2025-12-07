@@ -48,13 +48,13 @@ function App() {
       <header className="bg-white shadow-md z-30 flex-none border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg flex items-center justify-center text-white shadow-lg">
+            <div className="flex items-center gap-3 overflow-hidden">
+              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg flex items-center justify-center text-white shadow-lg flex-shrink-0">
                 <i className="fa-solid fa-utensils"></i>
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-slate-800 leading-tight tracking-tight">VP Buffet Strategist</h1>
-                <p className="text-[10px] uppercase font-semibold text-amber-600 tracking-wider">For Men 50+ | No Beef/Fish/Raw</p>
+              <div className="overflow-hidden">
+                <h1 className="text-xl font-bold text-slate-800 leading-tight tracking-tight whitespace-nowrap">VP Buffet</h1>
+                <p className="text-[10px] uppercase font-semibold text-amber-600 tracking-wider truncate max-w-[180px] md:max-w-none">For Men 50+ | No Beef/Fish/Raw</p>
               </div>
             </div>
 
@@ -83,7 +83,7 @@ function App() {
               </nav>
 
               {/* Lang Switcher */}
-              <button onClick={toggleLanguage} className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors border border-slate-200">
+              <button onClick={toggleLanguage} className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors border border-slate-200">
                 <span className="text-lg">{lang === 'th' ? '🇹🇭' : '🇺🇸'}</span>
                 <span className="text-xs font-bold text-slate-600">{lang === 'th' ? 'TH' : 'EN'}</span>
               </button>

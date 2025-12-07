@@ -62,26 +62,26 @@ const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
           <div className="absolute top-0 right-0 p-4 opacity-10 text-9xl transform translate-x-10 -translate-y-10">
             <i className={iconClass}></i>
           </div>
-          <button onClick={onClose} className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors z-10">
-            <i className="fa-solid fa-xmark text-2xl"></i>
+          <button onClick={onClose} className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors z-10 bg-black/20 rounded-full w-8 h-8 flex items-center justify-center">
+            <i className="fa-solid fa-xmark text-lg"></i>
           </button>
-          <div className="flex items-start gap-4 relative z-10">
+          <div className="flex items-start gap-4 relative z-10 pr-8">
             <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/10 flex-shrink-0">
               <i className={`${iconClass} text-2xl text-amber-400`}></i>
             </div>
             <div>
               <span className="text-[10px] font-bold bg-amber-500 text-white px-2 py-0.5 rounded uppercase tracking-wider mb-1 inline-block">{item.c}</span>
-              <h2 className="text-xl font-bold leading-tight pr-8">{item.n}</h2>
+              <h2 className="text-xl font-bold leading-tight">{item.n}</h2>
               {statusEl}
             </div>
           </div>
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto bg-white flex-1">
+        <div className="p-6 overflow-y-auto bg-white flex-1 overscroll-contain">
           <div className="space-y-6">
             
-            {/* NEW Section: Ingredients */}
+            {/* Section: Ingredients */}
             <div>
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
                 <i className="fa-solid fa-basket-shopping text-blue-500"></i> <span>{t.modal_ing}</span>
@@ -91,27 +91,27 @@ const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
               </p>
             </div>
 
-            {/* NEW Section: Nutrition Grid */}
+            {/* Section: Nutrition Grid - 2 cols mobile, 4 cols desktop */}
             <div>
                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
                 <i className="fa-solid fa-chart-simple text-purple-500"></i> <span>{t.modal_nutri_grid}</span>
               </h3>
-              <div className="grid grid-cols-4 gap-2 text-center">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
                 <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
                   <div className="text-[10px] text-slate-400 uppercase font-bold">{t.nutri_cal}</div>
-                  <div className="font-bold text-slate-800">{item.kcal}</div>
+                  <div className="font-bold text-slate-800 text-lg">{item.kcal}</div>
                 </div>
                 <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
                   <div className="text-[10px] text-slate-400 uppercase font-bold">{t.nutri_prot}</div>
-                  <div className="font-bold text-slate-800">{item.protein}</div>
+                  <div className="font-bold text-slate-800 text-lg">{item.protein}</div>
                 </div>
                 <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
                   <div className="text-[10px] text-slate-400 uppercase font-bold">{t.nutri_fat}</div>
-                  <div className="font-bold text-slate-800">{item.fat}</div>
+                  <div className="font-bold text-slate-800 text-lg">{item.fat}</div>
                 </div>
                 <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
                   <div className="text-[10px] text-slate-400 uppercase font-bold">{item.sugar ? t.nutri_sugar : t.nutri_carb}</div>
-                  <div className="font-bold text-slate-800">{item.sugar ? item.sugar : item.carbs}</div>
+                  <div className="font-bold text-slate-800 text-lg">{item.sugar ? item.sugar : item.carbs}</div>
                 </div>
               </div>
             </div>
@@ -131,12 +131,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                 <div className="text-[10px] text-slate-400 uppercase tracking-wide mb-1">{t.modal_cost}</div>
-                <div className="text-2xl font-bold text-slate-700">฿{item.cost}</div>
+                <div className="text-xl md:text-2xl font-bold text-slate-700">฿{item.cost}</div>
                 <div className="text-[10px] text-slate-400 mt-1">{t.modal_cost_sub}</div>
               </div>
               <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 shadow-sm">
                 <div className="text-[10px] text-amber-600 uppercase tracking-wide mb-1">{t.modal_val}</div>
-                <div className="text-2xl font-bold text-amber-700">฿{item.val}</div>
+                <div className="text-xl md:text-2xl font-bold text-amber-700">฿{item.val}</div>
                 <div className="text-[10px] text-amber-600/70 mt-1">{t.modal_val_sub}</div>
               </div>
             </div>
@@ -155,7 +155,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-100 text-center flex-none">
+        <div className="p-4 bg-slate-50 border-t border-slate-100 text-center flex-none pb-safe">
           <button onClick={onClose} className="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-[0.98]">
             {t.modal_close}
           </button>

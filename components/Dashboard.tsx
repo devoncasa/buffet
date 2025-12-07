@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Lang, TranslationSet } from '../types';
 
@@ -73,7 +72,7 @@ const Dashboard: React.FC<DashboardProps> = ({ t }) => {
 
   const renderPlanCard = (time: string, icon: string, title: string, desc: string, items: string[]) => {
     return (
-      <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative overflow-hidden group hover:border-amber-300 transition-colors h-full">
+      <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative overflow-hidden group hover:border-amber-300 transition-colors h-full min-w-[260px] md:min-w-0 snap-center">
         <div className="absolute top-0 right-0 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-bl">{time}</div>
         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-xl mb-3 shadow-sm">{icon}</div>
         <h3 className="font-bold text-sm mb-1 text-slate-800">{title}</h3>
@@ -116,42 +115,42 @@ const Dashboard: React.FC<DashboardProps> = ({ t }) => {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="glass-panel bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500">
+      {/* Stats - Grid keeps good structure on mobile */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="glass-panel bg-white p-4 md:p-5 rounded-xl shadow-sm border-l-4 border-amber-500">
           <div className="text-slate-500 text-[10px] uppercase font-bold tracking-wider mb-1">{t.stat_total}</div>
-          <div className="text-3xl font-bold text-slate-800">77</div>
+          <div className="text-2xl md:text-3xl font-bold text-slate-800">77</div>
         </div>
-        <div className="glass-panel bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-500">
+        <div className="glass-panel bg-white p-4 md:p-5 rounded-xl shadow-sm border-l-4 border-emerald-500">
           <div className="text-slate-500 text-[10px] uppercase font-bold tracking-wider mb-1">{t.stat_safe}</div>
-          <div className="text-3xl font-bold text-emerald-600">48</div>
+          <div className="text-2xl md:text-3xl font-bold text-emerald-600">48</div>
         </div>
-        <div className="glass-panel bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500">
+        <div className="glass-panel bg-white p-4 md:p-5 rounded-xl shadow-sm border-l-4 border-blue-500">
           <div className="text-slate-500 text-[10px] uppercase font-bold tracking-wider mb-1">{t.stat_value}</div>
-          <div className="text-3xl font-bold text-blue-600">฿4,200+</div>
+          <div className="text-2xl md:text-3xl font-bold text-blue-600">฿4.2k+</div>
         </div>
-        <div className="glass-panel bg-white p-5 rounded-xl shadow-sm border-l-4 border-red-500">
+        <div className="glass-panel bg-white p-4 md:p-5 rounded-xl shadow-sm border-l-4 border-red-500">
           <div className="text-slate-500 text-[10px] uppercase font-bold tracking-wider mb-1">{t.stat_avoid}</div>
-          <div className="text-3xl font-bold text-red-600">29</div>
+          <div className="text-2xl md:text-3xl font-bold text-red-600">29</div>
         </div>
       </div>
 
       {/* Strategic Plan */}
-      <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+      <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-slate-100">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:mb-6 gap-4">
           <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
             <i className="fa-solid fa-chess-knight text-amber-600"></i> {t.plan_title}
           </h2>
           
-          {/* Plan Selector */}
-          <div className="flex flex-wrap gap-2">
+          {/* Plan Selector - Horizontal Scroll on Mobile */}
+          <div className="flex overflow-x-auto gap-2 pb-2 w-full md:w-auto hide-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
              {plans.map((p, idx) => (
                 <button 
                   key={idx}
                   onClick={() => setActivePlan(idx)}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                  className={`flex-shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
                     activePlan === idx 
-                      ? 'bg-amber-600 text-white shadow-md transform scale-105' 
+                      ? 'bg-amber-600 text-white shadow-md' 
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
@@ -163,19 +162,23 @@ const Dashboard: React.FC<DashboardProps> = ({ t }) => {
         
         {/* Plan Explanation Banner */}
         <div className="mb-6 bg-amber-50 border border-amber-100 rounded-lg p-4 flex gap-3 items-start">
-           <i className="fa-solid fa-quote-left text-amber-400 text-xl mt-1"></i>
+           <i className="fa-solid fa-quote-left text-amber-400 text-xl mt-1 flex-shrink-0"></i>
            <div>
               <h4 className="text-amber-900 font-bold text-sm mb-1">{currentPlan.name}</h4>
               <p className="text-amber-800 text-sm leading-relaxed">{currentPlan.why}</p>
            </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        {/* Plan Timeline - Horizontal Scroll Snap on Mobile */}
+        <div className="flex flex-nowrap overflow-x-auto gap-4 md:grid md:grid-cols-2 lg:grid-cols-5 pb-4 -mx-4 px-4 md:pb-0 md:mx-0 md:px-0 hide-scrollbar snap-x">
           {renderPlanCard('0-15 min', '🥣', t.step1_t, t.step1_d, currentPlan.steps[0])}
           {renderPlanCard('15-45 min', '🥗', t.step2_t, t.step2_d, currentPlan.steps[1])}
           {renderPlanCard('45-75 min', '🍖', t.step3_t, t.step3_d, currentPlan.steps[2])}
           {renderPlanCard('75-100 min', '🍝', t.step4_t, t.step4_d, currentPlan.steps[3])}
           {renderPlanCard('100-120 min', '☕', t.step5_t, t.step5_d, currentPlan.steps[4])}
+        </div>
+        <div className="md:hidden text-center text-[10px] text-slate-400 mt-2">
+            <i className="fa-solid fa-arrows-left-right mr-1"></i> Swipe to see full plan
         </div>
       </div>
     </div>
