@@ -1,0 +1,71 @@
+import React from 'react';
+import { TranslationSet, MenuItem } from '../types';
+import { beverageDB } from '../data';
+
+interface BeverageProps {
+  t: TranslationSet;
+  onItemClick: (item: MenuItem) => void;
+}
+
+const Beverage: React.FC<BeverageProps> = ({ t, onItemClick }) => {
+  
+  // Group beverages by category
+  const categories: { [key: string]: MenuItem[] } = {
+    [t.bev_soft]: beverageDB.filter(i => i.c === 'Soft Drinks'),
+    [t.bev_mock]: beverageDB.filter(i => i.c === 'Mocktails'),
+    [t.bev_coffee]: beverageDB.filter(i => i.c === 'Coffee (Hot Only)'),
+    [t.bev_spec]: beverageDB.filter(i => i.c === 'Special Drink')
+  };
+
+  const iconMap: { [key: string]: string } = {
+    [t.bev_soft]: '🥤',
+    [t.bev_mock]: '🍹',
+    [t.bev_coffee]: '☕',
+    [t.bev_spec]: '🍺'
+  };
+
+  const renderBevCard = (title: string, items: MenuItem[]) => {
+    const icon = iconMap[title] || '🥤';
+    return (
+      <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+        <h4 className="font-bold text-slate-700 mb-3 pb-2 border-b border-slate-100 flex items-center gap-2">
+          <span>{icon}</span> {title}
+        </h4>
+        <ul className="text-sm text-slate-600 space-y-1">
+          {items.map((item, idx) => (
+            <li 
+              key={idx} 
+              className="flex justify-between py-2 border-b border-slate-50 last:border-0 cursor-pointer hover:bg-slate-50 px-2 -mx-2 rounded transition-colors group"
+              onClick={() => onItemClick(item)}
+            >
+              <span className="group-hover:text-amber-700 transition-colors">{item.n}</span>
+              <i className="fa-solid fa-chevron-right text-[10px] text-slate-300 opacity-0 group-hover:opacity-100 mt-1"></i>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+  return (
+    <div id="view-beverage" className="space-y-6">
+      <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm mb-6 flex items-start gap-4">
+        <div className="text-2xl text-amber-600 mt-1"><i className="fa-solid fa-lightbulb"></i></div>
+        <div>
+          <h3 className="font-bold text-amber-800 text-sm">{t.bev_advice_title}</h3>
+          <p className="text-xs text-amber-900 mt-1 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.bev_advice_desc }}></p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {Object.entries(categories).map(([title, items], idx) => (
+          <React.Fragment key={idx}>
+            {renderBevCard(title, items)}
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Beverage;
