@@ -1,3 +1,4 @@
+
 export interface MenuItem {
   n: string; // Name
   c: string; // Category
@@ -56,6 +57,11 @@ export interface TranslationSet {
   stat_value: string;
   stat_avoid: string;
   plan_title: string;
+  plan_name_1: string; plan_why_1: string;
+  plan_name_2: string; plan_why_2: string;
+  plan_name_3: string; plan_why_3: string;
+  plan_name_4: string; plan_why_4: string;
+  plan_name_5: string; plan_why_5: string;
   step1_t: string; step1_d: string;
   step2_t: string; step2_d: string;
   step3_t: string; step3_d: string;
