@@ -1,26 +1,35 @@
 
+export type DietaryStyle = 'omnivore' | 'keto' | 'vegetarian' | 'pescatarian';
+
 export interface MenuItem {
   n: string; // Name
   c: string; // Category
   h: string; // Highlight
   cost: number;
   val: number;
-  s: number; // Status: 0=Avoid, 1=Neutral, 2=Recommended, 3=Must Try
+  tags: string[]; // Dynamic filtering (e.g., 'beef', 'carb', 'sugar', 'veg')
   r_th: string; // Recommendation TH
   r_en: string; // Recommendation EN
-  // New Details
+  // Details
   ing_th: string;
   ing_en: string;
   kcal: number;
   protein: string;
   fat: string;
   carbs: string;
-  sugar?: string; // Specific for beverages or desserts
+  sugar?: string;
 }
 
 export type Lang = 'th' | 'en';
 
 export interface TranslationSet {
+  app_title: string;
+  app_subtitle: string;
+  diet_selector: string;
+  diet_omni: string;
+  diet_keto: string;
+  diet_veg: string;
+  diet_pesc: string;
   nav_dash: string;
   nav_menu: string;
   nav_bev: string;
@@ -50,8 +59,8 @@ export interface TranslationSet {
   about_sub: string;
   about_atmosphere: string;
   about_atm_desc: string;
-  about_why: string;
-  about_why_desc: string;
+  about_logic: string;
+  about_logic_desc: string;
   stat_total: string;
   stat_safe: string;
   stat_value: string;
@@ -61,7 +70,6 @@ export interface TranslationSet {
   plan_name_2: string; plan_why_2: string;
   plan_name_3: string; plan_why_3: string;
   plan_name_4: string; plan_why_4: string;
-  plan_name_5: string; plan_why_5: string;
   step1_t: string; step1_d: string;
   step2_t: string; step2_d: string;
   step3_t: string; step3_d: string;

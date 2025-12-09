@@ -1,5 +1,7 @@
+
 import React from 'react';
-import { MenuItem, TranslationSet, Lang } from '../types';
+import { MenuItem, TranslationSet, Lang, DietaryStyle } from '../types';
+import { calculateStatus } from '../data';
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,13 +9,16 @@ interface ModalProps {
   onClose: () => void;
   t: TranslationSet;
   lang: Lang;
+  diet: DietaryStyle;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang, diet }) => {
   if (!item) return null;
 
   const adviceText = lang === 'th' ? item.r_th : item.r_en;
-  const ingredients = lang === 'th' ? item.ing_th : item.ing_en;
+  const ingredientsStr = lang === 'th' ? item.ing_th : item.ing_en;
+  // Split ingredients by comma and remove empty strings
+  const ingredientList = ingredientsStr ? ingredientsStr.split(',').map(i => i.trim()).filter(i => i) : [];
   
   const iconMap: { [key: string]: string } = {
     'Salad': 'fa-leaf', 
@@ -32,14 +37,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
 
   const iconClass = `fa-solid ${iconMap[item.c] || 'fa-utensils'}`;
 
+  // Calculate dynamic status
+  const status = calculateStatus(item, diet);
+
   let statusEl = null;
-  if (item.s === 0) {
+  if (status === 0) {
     statusEl = (
       <div className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-200">
         <i className='fa-solid fa-triangle-exclamation'></i> {lang === 'th' ? 'ควรเลี่ยง' : 'Avoid'}
       </div>
     );
-  } else if (item.s >= 2) {
+  } else if (status >= 2) {
     statusEl = (
       <div className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
         <i className='fa-solid fa-thumbs-up'></i> {lang === 'th' ? 'แนะนำสูงสุด' : 'Highly Recommended'}
@@ -86,9 +94,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
                 <i className="fa-solid fa-basket-shopping text-blue-500"></i> <span>{t.modal_ing}</span>
               </h3>
-              <p className="text-slate-700 text-sm leading-relaxed bg-blue-50 p-3 rounded-lg border border-blue-100">
-                {ingredients}
-              </p>
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                <ul className="space-y-2">
+                  {ingredientList.length > 0 ? (
+                    ingredientList.map((ing, idx) => (
+                      <li key={idx} className="text-slate-700 text-sm flex items-start leading-relaxed">
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 mr-2.5 flex-shrink-0"></span>
+                        <span>{ing}</span>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="text-slate-500 text-sm italic">No detailed ingredients available.</li>
+                  )}
+                </ul>
+              </div>
             </div>
 
             {/* Section: Nutrition Grid - 2 cols mobile, 4 cols desktop */}
@@ -110,8 +129,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
                   <div className="font-bold text-slate-800 text-lg">{item.fat}</div>
                 </div>
                 <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                  <div className="text-[10px] text-slate-400 uppercase font-bold">{item.sugar ? t.nutri_sugar : t.nutri_carb}</div>
-                  <div className="font-bold text-slate-800 text-lg">{item.sugar ? item.sugar : item.carbs}</div>
+                  <div className="text-[10px] text-slate-400 uppercase font-bold">{item.sugar && item.sugar !== '0g' ? t.nutri_sugar : t.nutri_carb}</div>
+                  <div className="font-bold text-slate-800 text-lg">{item.sugar && item.sugar !== '0g' ? item.sugar : item.carbs}</div>
                 </div>
               </div>
             </div>
@@ -123,7 +142,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, item, onClose, t, lang }) => {
               </h3>
               <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 relative">
                 <i className="fa-solid fa-quote-left text-slate-200 absolute top-2 left-2 text-3xl -z-10"></i>
-                <p className="text-slate-700 text-sm leading-relaxed">{item.h}</p>
+                <p className="text-slate-700 text-sm leading-relaxed font-medium">{item.h}</p>
               </div>
             </div>
 

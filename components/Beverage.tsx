@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { TranslationSet, MenuItem } from '../types';
 import { beverageDB } from '../data';
@@ -9,19 +10,28 @@ interface BeverageProps {
 
 const Beverage: React.FC<BeverageProps> = ({ t, onItemClick }) => {
   
-  // Group beverages by category
-  const categories: { [key: string]: MenuItem[] } = {
-    [t.bev_soft]: beverageDB.filter(i => i.c === 'Soft Drinks'),
-    [t.bev_mock]: beverageDB.filter(i => i.c === 'Mocktails'),
-    [t.bev_coffee]: beverageDB.filter(i => i.c === 'Coffee (Hot Only)'),
-    [t.bev_spec]: beverageDB.filter(i => i.c === 'Special Drink')
+  // Use safe default keys if translations are missing or don't match data
+  const softDrinksTitle = t.bev_soft || "Soft Drinks";
+  const mocktailsTitle = t.bev_mock || "Mocktails";
+  const coffeeTitle = t.bev_coffee || "Coffee (Hot Only)";
+  const specialTitle = t.bev_spec || "Special Drink";
+
+  // Safety check to ensure data exists before filtering
+  if (!beverageDB) return null;
+
+  // Data mapping: keys here are for display, values filter by the HARDCODED category in data.ts
+  const categories: { [title: string]: MenuItem[] } = {
+    [softDrinksTitle]: beverageDB.filter(i => i.c === 'Soft Drinks'),
+    [mocktailsTitle]: beverageDB.filter(i => i.c === 'Mocktails'),
+    [coffeeTitle]: beverageDB.filter(i => i.c === 'Coffee (Hot Only)'),
+    [specialTitle]: beverageDB.filter(i => i.c === 'Special Drink')
   };
 
   const iconMap: { [key: string]: string } = {
-    [t.bev_soft]: '🥤',
-    [t.bev_mock]: '🍹',
-    [t.bev_coffee]: '☕',
-    [t.bev_spec]: '🍺'
+    [softDrinksTitle]: '🥤',
+    [mocktailsTitle]: '🍹',
+    [coffeeTitle]: '☕',
+    [specialTitle]: '🍺'
   };
 
   const renderBevCard = (title: string, items: MenuItem[]) => {
@@ -32,16 +42,20 @@ const Beverage: React.FC<BeverageProps> = ({ t, onItemClick }) => {
           <span>{icon}</span> {title}
         </h4>
         <ul className="text-sm text-slate-600 space-y-1">
-          {items.map((item, idx) => (
-            <li 
-              key={idx} 
-              className="flex justify-between py-2 border-b border-slate-50 last:border-0 cursor-pointer hover:bg-slate-50 px-2 -mx-2 rounded transition-colors group"
-              onClick={() => onItemClick(item)}
-            >
-              <span className="group-hover:text-amber-700 transition-colors">{item.n}</span>
-              <i className="fa-solid fa-chevron-right text-[10px] text-slate-300 opacity-0 group-hover:opacity-100 mt-1"></i>
-            </li>
-          ))}
+          {items.length === 0 ? (
+             <li className="text-slate-400 text-xs italic py-2">No items available</li>
+          ) : (
+             items.map((item, idx) => (
+              <li 
+                key={idx} 
+                className="flex justify-between py-2 border-b border-slate-50 last:border-0 cursor-pointer hover:bg-slate-50 px-2 -mx-2 rounded transition-colors group"
+                onClick={() => onItemClick(item)}
+              >
+                <span className="group-hover:text-amber-700 transition-colors">{item.n}</span>
+                <i className="fa-solid fa-chevron-right text-[10px] text-slate-300 opacity-0 group-hover:opacity-100 mt-1"></i>
+              </li>
+            ))
+          )}
         </ul>
       </div>
     );
